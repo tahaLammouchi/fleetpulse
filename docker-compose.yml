@@ -1,0 +1,68 @@
+version: "3.9"
+
+services:
+
+  # ══════════════════════════════════════════════
+  # PostgreSQL + TimescaleDB
+  # ══════════════════════════════════════════════
+  postgres:
+    image: timescale/timescaledb:latest-pg16
+    container_name: fleetpulse-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: fleetpulse
+      POSTGRES_USER: fleetpulse
+      POSTGRES_PASSWORD: fleetpulse
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fleetpulse"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ══════════════════════════════════════════════
+  # RabbitMQ avec plugin management UI
+  # ══════════════════════════════════════════════
+  rabbitmq:
+    image: rabbitmq:3.13-management
+    container_name: fleetpulse-rabbitmq
+    restart: unless-stopped
+    environment:
+      RABBITMQ_DEFAULT_USER: fleetpulse
+      RABBITMQ_DEFAULT_PASS: fleetpulse
+    ports:
+      - "5672:5672"     # port AMQP (utilisé par les services)
+      - "15672:15672"   # interface web management UI
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ══════════════════════════════════════════════
+  # Keycloak (IAM)
+  # ══════════════════════════════════════════════
+  keycloak:
+    image: quay.io/keycloak/keycloak:25.0
+    container_name: fleetpulse-keycloak
+    restart: unless-stopped
+    command: start-dev --import-realm
+    environment:
+      KEYCLOAK_ADMIN: fleetpulse
+      KEYCLOAK_ADMIN_PASSWORD: fleetpulse
+      KC_DB: dev-file 
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./keycloak/realm-export.json:/opt/keycloak/data/import/realm-export.json
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:
+  rabbitmq_data:

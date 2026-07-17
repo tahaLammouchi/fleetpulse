@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fleetpulse.internal/contracts/alert-event.schema.json",
+  "title": "AlertEvent",
+  "description": "Événement publié par le service Alerting sur l'exchange RabbitMQ 'alerts', déclenchant l'envoi de notification. L'entité Alert est déjà persistée via POST /alerts (sync REST) avant cette publication.",
+  "type": "object",
+  "required": ["alert_id", "vehicle_id", "severity", "anomaly_score", "triggered_at"],
+  "properties": {
+    "alert_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Identifiant UUID de l'alerte, déjà créée en base par Fleet API — sert de clé d'idempotence pour Notification"
+    },
+    "vehicle_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Identifiant UUID du véhicule concerné"
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["warning", "critical"],
+      "description": "Niveau de gravité, dérivé du dépassement de seuil (ex: critical si score très supérieur au threshold)"
+    },
+    "anomaly_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Score ayant déclenché l'alerte, dénormalisé pour affichage direct côté Notification"
+    },
+    "triggered_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Horodatage de déclenchement, correspond à alert.triggered_at"
+    }
+  },
+  "additionalProperties": false
+}
+

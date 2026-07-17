@@ -1,0 +1,29 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/fleetpulse
+    username: ${DB_USER:fleetpulse}
+    password: ${DB_PASSWORD:fleetpulse}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USER:fleetpulse}
+    password: ${RABBITMQ_PASSWORD:fleetpulse}
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:8081/realms/fleetpulse}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+server:
+  port: ${SERVER_PORT:8090}

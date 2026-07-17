@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fleetpulse.internal/contracts/telemetry.schema.json",
+  "title": "TelemetryEvent",
+  "description": "Événement de télémétrie brute publié par le service Ingestion sur l'exchange RabbitMQ 'telemetry'.",
+  "type": "object",
+  "required": ["vehicle_id", "timestamp", "temperature", "vibration", "oil_level", "rpm", "mileage"],
+  "properties": {
+    "vehicle_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Identifiant UUID du véhicule émetteur, référence logique vers vehicle.id"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Horodatage ISO 8601 de la mesure, correspond à la colonne 'time' de l'hypertable telemetry_readings"
+    },
+    "temperature": {
+      "type": "number",
+      "description": "Température moteur en degrés Celsius"
+    },
+    "vibration": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Niveau de vibration mesuré (unité arbitraire du capteur simulé)"
+    },
+    "oil_level": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Niveau d'huile en pourcentage"
+    },
+    "rpm": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Régime moteur en tours par minute"
+    },
+    "mileage": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Kilométrage cumulé au moment de la mesure"
+    }
+  },
+  "additionalProperties": false
+}

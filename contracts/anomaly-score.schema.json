@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fleetpulse.internal/contracts/anomaly-score.schema.json",
+  "title": "AnomalyScoreEvent",
+  "description": "Score d'anomalie publié par le service ML Inference sur l'exchange RabbitMQ 'anomaly.scores'.",
+  "type": "object",
+  "required": ["vehicle_id", "timestamp", "score", "model_version"],
+  "properties": {
+    "vehicle_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Identifiant UUID du véhicule concerné"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Horodatage du calcul du score, correspond à la colonne 'time' de anomaly_scores"
+    },
+    "score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Score d'anomalie normalisé entre 0 (normal) et 1 (fortement anormal), produit par l'Isolation Forest"
+    },
+    "model_version": {
+      "type": "string",
+      "description": "Version du modèle ML ayant produit ce score (ex: 'v1', 'v2') — utilisée par AlertThreshold pour résoudre le bon seuil"
+    }
+  },
+  "additionalProperties": false
+}

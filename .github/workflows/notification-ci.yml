@@ -1,0 +1,38 @@
+# .github/workflows/notification-ci.yml
+name: Notification Service — CI
+
+on:
+	push:
+		paths:
+			- "services/notification/**"
+	pull_request:
+		paths:
+			- "services/notification/**"
+
+jobs:
+	build-and-test:
+		runs-on: ubuntu-latest
+		defaults:
+			run:
+				working-directory: services/notification
+
+		steps:
+			- uses: actions/checkout@v4
+
+			- name: Set up Python
+				uses: actions/setup-python@v5
+				with:
+					python-version: "3.12"
+					cache: pip
+					cache-dependency-path: services/notification/requirements.txt
+
+			- name: Install dependencies
+				run: |
+					pip install -r requirements.txt
+					pip install ruff pytest
+
+			- name: Lint (ruff)
+				run: ruff check .
+
+			- name: Run unit tests
+				run: pytest tests/ -v
