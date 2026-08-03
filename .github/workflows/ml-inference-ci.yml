@@ -2,37 +2,39 @@
 name: ML Inference — CI
 
 on:
-	push:
-		paths:
-			- "services/ml-inference/**"
-	pull_request:
-		paths:
-			- "services/ml-inference/**"
+  push:
+    paths:
+      - "services/ml-inference/**"
+
+  pull_request:
+    paths:
+      - "services/ml-inference/**"
 
 jobs:
-	build-and-test:
-		runs-on: ubuntu-latest
-		defaults:
-			run:
-				working-directory: services/ml-inference
+  build-and-test:
+    runs-on: ubuntu-latest
 
-		steps:
-			- uses: actions/checkout@v4
+    defaults:
+      run:
+        working-directory: services/ml-inference
 
-			- name: Set up Python
-				uses: actions/setup-python@v5
-				with:
-					python-version: "3.12"
-					cache: pip
-					cache-dependency-path: services/ml-inference/requirements.txt
+    steps:
+      - uses: actions/checkout@v4
 
-			- name: Install dependencies
-				run: |
-					pip install -r requirements.txt
-					pip install ruff pytest
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: services/ml-inference/requirements.txt
 
-			- name: Lint (ruff)
-				run: ruff check .
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install ruff pytest
 
-			- name: Run unit tests
-				run: pytest tests/ -v
+      - name: Lint (ruff)
+        run: ruff check .
+
+      - name: Run unit tests
+        run: pytest tests/ -v
