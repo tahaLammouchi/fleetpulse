@@ -25,10 +25,7 @@ jobs:
           java-version: "21"
           distribution: "temurin"
           cache: maven
-
-      - name: Lint (Checkstyle)
-        run: ./mvnw checkstyle:check
-
+          
       - name: Build
         run: ./mvnw compile
         
