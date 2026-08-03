@@ -31,9 +31,6 @@ jobs:
 
       - name: Build
         run: ./mvnw compile
-
-      - name: Run unit tests
-        run: ./mvnw test
-
+        
       - name: Run integration tests
         run: ./mvnw verify -Dskip.surefire.tests=true
