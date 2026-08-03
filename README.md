@@ -8,33 +8,9 @@ This repository contains the initial project skeleton for all backend services a
 ---
 
 ## Project Architecture
+<img width="3591" height="1706" alt="Diagramme d&#39;architecture FleetPulse" src="https://github.com/user-attachments/assets/c6e5f2b6-2e1c-4922-b989-b5972180454b" />
 
-```text
-fleetpulse/
-│
-├── services/
-│   ├── fleet-api/                # Spring Boot API Gateway
-│   ├── ingestion-service/        # FastAPI - Telemetry ingestion
-│   ├── ml-inference-service/     # FastAPI - ML inference
-│   ├── alerting-service/         # FastAPI - Alert generation
-│   ├── notification-service/     # FastAPI - Notification delivery
-│   └── simulator-service/        # FastAPI - Vehicle telemetry simulator
-│
-├── contracts/                    # Shared JSON event schemas
-│
-├── infrastructure/
-│   ├── docker/
-│   ├── postgres/
-│   ├── rabbitmq/
-│   └── monitoring/
-│
-├── docs/
-├── scripts/
-├── docker-compose.yml
-└── README.md
-```
-
----
+<img width="3923" height="1258" alt="Diagramme de classes FleetPulse" src="https://github.com/user-attachments/assets/279c0884-ad63-492f-b6d1-75b2221fa9d1" />
 
 ## Technology Stack
 
