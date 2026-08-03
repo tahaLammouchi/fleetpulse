@@ -16,21 +16,6 @@ jobs:
       run:
         working-directory: services/fleet-api
 
-    services:
-      postgres:
-        image: timescale/timescaledb:latest-pg16
-        env:
-          POSTGRES_DB: fleetpulse_test
-          POSTGRES_USER: fleetpulse
-          POSTGRES_PASSWORD: fleetpulse
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 5s
-          --health-timeout 5s
-          --health-retries 5
-
     steps:
       - uses: actions/checkout@v4
 
@@ -47,9 +32,8 @@ jobs:
       - name: Build
         run: ./mvnw compile
 
-      - name: Run unit + integration tests
+      - name: Run unit tests
         run: ./mvnw test
-        env:
-          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/fleetpulse_test
-          SPRING_DATASOURCE_USERNAME: fleetpulse
-          SPRING_DATASOURCE_PASSWORD: fleetpulse
+
+      - name: Run integration tests
+        run: ./mvnw verify -Dskip.surefire.tests=true

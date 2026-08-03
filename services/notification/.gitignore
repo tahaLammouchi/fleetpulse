@@ -1,0 +1,26 @@
+# Docker
+docker-compose.override.yml
+
+# Secrets globaux
+.env
+.env.local
+*.pem
+*.key
+
+# Keycloak (données locales, pas la config du realm)
+keycloak/data/
+
+# Kubernetes (si secrets en clair générés localement pour test)
+k8s/**/secret-*.yaml
+!k8s/**/secret-*.example.yaml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE partagé
+.idea/
+.vscode/
+
+# Rapports / artefacts de build divers
+*.log

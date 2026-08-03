@@ -1,10 +1,17 @@
-HELP.md
+# Maven
 target/
-.mvn/wrapper/maven-wrapper.jar
+!.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 
-### STS ###
+# IDE - IntelliJ
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# IDE - Eclipse
 .apt_generated
 .classpath
 .factorypath
@@ -12,22 +19,28 @@ target/
 .settings
 .springBeans
 .sts4-cache
+bin/
 
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
-
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
-
-### VS Code ###
+# IDE - VS Code
 .vscode/
+
+# Spring Boot
+HELP.md
+*.log
+
+# Fichiers d'environnement (secrets)
+.env
+.env.local
+application-local.yml
+application-secrets.yml
+
+# Testcontainers (local à la machine, jamais versionné)
+.testcontainers.properties
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Rapports de tests
+/target/surefire-reports/
+/target/failsafe-reports/
