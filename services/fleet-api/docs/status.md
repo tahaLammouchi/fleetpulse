@@ -4,7 +4,7 @@
 
 ## Overview
 
-FleetPulse is a fleet monitoring platform built on Spring Boot 4 + PostgreSQL/TimescaleDB, with RabbitMQ for inter-service messaging and Keycloak for authentication. This document tracks the implementation status of the `fleet-api` service.
+FleetPulse is a fleet monitoring platform built on Spring Boot 4 + PostgreSQL/TimescaleDB, with RabbitMQ for inter-service messaging and Keycloak for authentication. This document track the implementation status of the `fleet-api` service.
 
 ---
 
