@@ -14,4 +14,5 @@ public interface VehicleMapper {
     VehicleResponse toResponse(Vehicle vehicle);
 
     VehicleRestrictedResponse toRestrictedResponse(Vehicle vehicle);
+
 }

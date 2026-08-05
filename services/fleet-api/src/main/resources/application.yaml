@@ -33,5 +33,9 @@ management:
     web:
       exposure:
         include: health,info
+cloudinary:
+  cloud-name: ${CLOUDINARY_CLOUD_NAME:dp1ejeolq}
+  api-key: ${CLOUDINARY_API_KEY:766823229143736}
+  api-secret: ${CLOUDINARY_API_SECRET:tw1TLqKtIKSsQz8QTU9Eo4QeJJI}
 server:
   port: ${SERVER_PORT:8090}

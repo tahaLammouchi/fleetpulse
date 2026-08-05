@@ -52,6 +52,12 @@ public class GlobalExceptionHandler {
                 .body(Map.of("error", "Access denied"));
     }
 
+    @ExceptionHandler(CloudinaryException.class)
+    public ResponseEntity<Map<String, String>> handleCloudinaryException(CloudinaryException ex) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of("error", "Cloudinary error: " + ex.getMessage()));
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, String>> handleGenericException(Exception ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

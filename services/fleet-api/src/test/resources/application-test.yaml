@@ -19,3 +19,7 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: http://localhost:1/realms/test
+cloudinary:
+  cloud-name: test-cloud
+  api-key: test-api-key
+  api-secret: test-api-secret

@@ -4,6 +4,7 @@ import com.fleetpulse.fleet_api.domain.enums.VehicleStatus;
 import com.fleetpulse.fleet_api.domain.enums.VehicleType;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 public record VehicleResponse(
@@ -17,5 +18,7 @@ public record VehicleResponse(
         VehicleStatus status,
         LocalDateTime registeredAt,
         LocalDateTime createdAt,
-        LocalDateTime updatedAt
+        LocalDateTime updatedAt,
+        List<VehicleImageResponse> photos
+
 ) {}

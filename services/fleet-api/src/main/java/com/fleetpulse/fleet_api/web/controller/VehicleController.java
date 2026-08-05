@@ -2,14 +2,11 @@ package com.fleetpulse.fleet_api.web.controller;
 
 import com.fleetpulse.fleet_api.domain.enums.VehicleStatus;
 import com.fleetpulse.fleet_api.domain.enums.VehicleType;
+import com.fleetpulse.fleet_api.service.VehicleImageService;
 import com.fleetpulse.fleet_api.service.VehicleService;
-import com.fleetpulse.fleet_api.web.dto.request.CreateVehicleRequest;
-import com.fleetpulse.fleet_api.web.dto.request.PatchVehicleStatusRequest;
-import com.fleetpulse.fleet_api.web.dto.request.UpdateVehicleRequest;
-import com.fleetpulse.fleet_api.web.dto.response.TelemetryReadingResponse;
-import com.fleetpulse.fleet_api.web.dto.response.VehicleResponse;
+import com.fleetpulse.fleet_api.web.dto.request.*;
+import com.fleetpulse.fleet_api.web.dto.response.*;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,6 +20,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -32,6 +30,8 @@ import java.util.UUID;
 public class VehicleController {
 
     private final VehicleService vehicleService;
+    private final VehicleImageService vehicleImageService;
+
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
@@ -41,7 +41,6 @@ public class VehicleController {
                 request.fleetId(), request.licensePlate(), request.brand(), request.model(), request.vehicleType());
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
-
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'FLEET_MANAGER')")
     @Operation(summary = "List vehicles with filters")
@@ -103,5 +102,47 @@ public class VehicleController {
     @Operation(summary = "Vehicle count by type")
     public Map<VehicleType, Long> getStatsByType() {
         return vehicleService.getStatsByType();
+    }
+
+    @PostMapping("/{vehicleId}/images/upload-signature")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Generate Cloudinary upload signature")
+    public ResponseEntity<UploadSignatureResponse> generateUploadSignature(
+            @PathVariable UUID vehicleId
+    ) {
+        UploadSignatureResponse response = vehicleImageService.generateSignature(vehicleId);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @PostMapping("/{vehicleId}/images")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Save vehicle image metadata")
+    public ResponseEntity<List<VehicleImageResponse>> uploadImages(
+            @PathVariable UUID vehicleId,
+            @Valid @RequestBody UploadImagesRequest request
+    ) {
+        List<VehicleImageResponse> images =
+                vehicleImageService.uploadImages(vehicleId, request.images());
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(images);
+    }
+    @GetMapping("/{vehicleId}/images")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Get vehicle images")
+    public ResponseEntity<List<VehicleImageResponse>> getImages(
+            @PathVariable UUID vehicleId
+    ) {
+        return ResponseEntity.ok(vehicleImageService.getVehicleImages(vehicleId));
+    }
+
+    @DeleteMapping("/{vehicleId}/images")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Delete multiple vehicle images")
+    public ResponseEntity<Void> deleteImages(
+            @PathVariable UUID vehicleId,
+            @Valid @RequestBody DeleteImagesRequest request
+    ) {
+        vehicleImageService.deleteImages(vehicleId, request.imageIds());
+        return ResponseEntity.noContent().build();
     }
 }
