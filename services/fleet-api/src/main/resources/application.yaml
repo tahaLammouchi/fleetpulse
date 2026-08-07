@@ -16,6 +16,14 @@ spring:
     port: ${RABBITMQ_PORT:5672}
     username: ${RABBITMQ_USER:fleetpulse}
     password: ${RABBITMQ_PASSWORD:fleetpulse}
+    listener:
+      simple:
+        retry:
+          enabled: true
+          initial-interval: 1000
+          max-retries: 3
+          multiplier: 2.0
+        default-requeue-rejected: false
 
   security:
     oauth2:
